@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 // VARIABLES
 var squid = new Array();
-var fish_food = new Array();
+var yellowPoints = new Array();
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var player = 0;
@@ -32,11 +32,11 @@ var score = 0;
   }
 
 // full the information from a JSON and display it.
-function create_food(){
-    $.getJSON( "./data/food.json", function(data) {
+function create_points(){
+    $.getJSON( "./data/points.json", function(data) {
         for(let i = 0; i < 3; i ++){
             let j = new Vertibrate(data.info[i].x, data.info[i].y, data.info[i].width, data.info[i].height, data.info[i].color);
-            fish_food.push(j);
+            yellowPoints.push(j);
           }
     });
 /*   .done(function() { // Testing for errors during process.
@@ -53,7 +53,7 @@ function create_food(){
 
 
     create_squid();
-    create_food();
+    create_points();
     drawSquare();
     setInterval(update, 1000/60);
     //setInterval(switch_player, 3000);
@@ -72,10 +72,10 @@ function create_food(){
         ctx.fillRect(squid[i].x, squid[i].y, squid[i].width, squid[i].height);
         canvas_wall(squid[i]);
        }
-        // Draw the food objects
-       for ( let i = 0; i < fish_food.length ; i ++){
-        ctx.fillStyle = fish_food[i].color;
-        ctx.fillRect(fish_food[i].x, fish_food[i].y, fish_food[i].width, fish_food[i].height);
+        // Draw the points objects
+       for ( let i = 0; i < yellowPoints.length ; i ++){
+        ctx.fillStyle = yellowPoints[i].color;
+        ctx.fillRect(yellowPoints[i].x, yellowPoints[i].y, yellowPoints[i].width, yellowPoints[i].height);
 
        }
      }
@@ -168,16 +168,16 @@ function collisions(){
     }
   }
 //  This removes the collectable item after its spliced from the array.
-  setTimeout(remove_food, 1000);
+  setTimeout(remove_points, 1000);
 }
 
-function remove_food(){
+function remove_points(){
   // I need to a statement to splice out collectable items...
-    for (let i = 0; i < fish_food.length; i ++){
-      var test3 = have_collided(squid[player], fish_food[i]);
+    for (let i = 0; i < yellowPoints.length; i ++){
+      var test3 = have_collided(squid[player], yellowPoints[i]);
 
       if(test3){
-        fish_food.splice(i, 1);
+        yellowPoints.splice(i, 1);
         score ++;
       }
     }
