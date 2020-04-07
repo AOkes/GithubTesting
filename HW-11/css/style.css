@@ -1,0 +1,32 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  background-color: rgb(31, 54, 228);
+  width: 80%;
+  height: 50%;
+  font-family: monospace;
+  color: white;
+}
+
+h1{
+  font-size: 2em;
+}
+
+canvas{
+  width: 80%;
+  height: 50%;
+  background-color: white;
+  border: 20px solid rgb(29, 72, 120);
+}
+
+div{
+  padding: 20px;
+float: left;
+}
+
+#score{
+  background-color: white;
+  color: black;
+}
