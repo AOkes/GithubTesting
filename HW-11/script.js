@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 
-// VARIABLES
 var rectangle = new Array();
 var yellowPoints = new Array();
 var canvas = document.getElementById("canvas");
@@ -11,27 +10,17 @@ var movement;
 var speed = 1;
 var score = 0;
 
-// create new objects and push into an array
+//Create squares from the JSON data
   function create_rectangle(){
-// grab data from JSON file
       $.getJSON("./data/squares.json", function(data){
           for(let i = 0; i < 5; i ++){
               let j = new squareCreator(data.squares[i].x, data.squares[i].y, data.squares[i].width, data.squares[i].height, data.squares[i].color);
               rectangle.push(j);
           }
       });
-/*      .done(function() { // Testing for errors during process.
-         console.log( "second success" );
-       })
-       .fail(function() {
-         console.log( "error" );
-       })
-       .always(function() {
-         console.log( "complete" );
-       });*/
   }
 
-// full the information from a JSON and display it.
+//Create points from the JSON
 function create_points(){
     $.getJSON( "./data/points.json", function(data) {
         for(let i = 0; i < 3; i ++){
@@ -39,16 +28,6 @@ function create_points(){
             yellowPoints.push(j);
           }
     });
-/*   .done(function() { // Testing for errors during process.
-      console.log( "second success" );
-    })
-    .fail(function() {
-      console.log( "error" );
-    })
-    .always(function() {
-      console.log( "complete" );
-    });
-*/
 }
 
 
@@ -56,7 +35,6 @@ function create_points(){
     create_points();
     drawSquare();
     setInterval(update, 1000/60);
-    //setInterval(switch_player, 3000);
 
   function update() {
        ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -65,8 +43,8 @@ function create_points(){
          create_score();
      }
 
+//Uses for loop to draw squares on the canvas, including player
   function drawSquare(){
-       // for loop to display the objects in the array
        for ( let i = 0; i < rectangle.length ; i ++){
         ctx.fillStyle = rectangle[i].color;
         ctx.fillRect(rectangle[i].x, rectangle[i].y, rectangle[i].width, rectangle[i].height);
@@ -80,7 +58,7 @@ function create_points(){
        }
      }
 
-// This will create the score
+//Shows the scoreboard
 function create_score(){
 
   $("#score").html("Score: " + score);
@@ -91,13 +69,11 @@ function create_score(){
   }
 }
 
-
-  // KEYPRESS EVENT
      $(this).keypress(function(event){
        getKey(event);
      });
 
-// This function creates movement when a key is pressed
+// Moves the player character when using 'wasd'
   function getKey(event){
 
        var char = event.which || event.keyCode;
@@ -120,39 +96,22 @@ function create_score(){
          movement = "right"
        }
 
-       // Manually Switch which object is the "player"
-    /*   if (letter == "n"){
-         player += 1;
-         if (player >= rectangle.length){
-           player = 0;
-         }
-       }*/
-
   }
 
-  // Function to automatically switch of player
-/*  function switch_player(){
-    player += 1;
-    if (player >= rectangle.length){
-      player = 0;
-    }
-  }*/
 
-// this function tests for collision and if detected, prevents player object from overlapping.
+//Checks for any collisions between objects
 function collisions(){
 
-  // this variable will allow us to test if collision is true or false
   var test2 = false;
 
-  // this will loop through my rectangle array to see if any objects are colliding
  for ( let i = 1; i < rectangle.length ; i ++){
      test2 = have_collided(rectangle[0], rectangle[i]);
         if (test2 == true){
-      break; // if the objects overlap, then we break out of the loop.
+      break;
       }
 
   }
-  // if the collisions happen, then we push the player character back the opposite way.
+  //Upon collision, pushes player back
   if (test2){
     if (movement =="up"){
       down(rectangle[player]);
@@ -167,12 +126,11 @@ function collisions(){
       left(rectangle[player]);
     }
   }
-//  This removes the collectable item after its spliced from the array.
+//Removes points
   setTimeout(remove_points, 1000);
 }
 
 function remove_points(){
-  // I need to a statement to splice out collectable items...
     for (let i = 0; i < yellowPoints.length; i ++){
       var test3 = have_collided(rectangle[player], yellowPoints[i]);
 
@@ -183,10 +141,6 @@ function remove_points(){
     }
 }
 
-
-
-// These functions create movement up/down/left/moveRight.
-//We create seperate functions for these so we can reuse them with our collisions test above
     function up(object){
         object.y -= speed;
     }
@@ -203,7 +157,7 @@ function remove_points(){
           object.x += speed;
     }
 
-// Keep the player objects within the canvas.
+//Keeps the player on the canvas
      function canvas_wall(object){
        if (object.x >= canvas.width - object.width){
          object.x = canvas.width - object.width;
@@ -219,7 +173,6 @@ function remove_points(){
        }
      }
 
-     //Create object collision detection
       function have_collided(object1,object2){
         return !(
           ((object1.y + object1.height) < (object2.y)) || //
