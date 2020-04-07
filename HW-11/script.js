@@ -56,7 +56,7 @@ function create_food(){
     create_food();
     drawSquare();
     setInterval(update, 1000/60);
-    setInterval(switch_player, 3000);
+    //setInterval(switch_player, 3000);
 
   function update() {
        ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -131,12 +131,12 @@ function create_score(){
   }
 
   // Function to automatically switch of player
-  function switch_player(){
+/*  function switch_player(){
     player += 1;
     if (player >= squid.length){
       player = 0;
     }
-  }
+  }*/
 
 // this function tests for collision and if detected, prevents player object from overlapping.
 function collisions(){
