@@ -1,4 +1,4 @@
-class Vertibrate {
+class squareCreator {
 
   constructor(x, y, width, height, color){
     this.x = x;
